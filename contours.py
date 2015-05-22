@@ -10,9 +10,20 @@ def filterImage(src):
     pic = cv2.blur(src, (3, 3))
     pic = cv2.GaussianBlur(pic, (11, 11), 0)
     pic = cv2.medianBlur(pic, 11)
+    #print pic
     pic = cv2.cvtColor(pic, cv2.cv.CV_BGR2HSV)
     # apply threshold on hsv values to detect skin color
-    pic = cv2.inRange(pic, (0, 40, 80, 255), (50, 225, 255, 255))
+    #print pic
+    # In opencv 8-bit images. h<-h/2 (to fit 255), s<-255s, v<-255v. Originally 0<=h<360, 0<=s<=1, 0<=v<=1
+    # From preprcessing.pdf page 7
+    # V>=40
+    # 0.2<=S<=0.6
+    # 0<=H<=25 or 335<=H<=360
+
+    lowerRange=np.array([0,51,40])
+    upperRange=np.array([25,153,255])
+    #pic = cv2.inRange(pic, (0, 40, 80, 255), (50, 225, 255, 255))
+    pic = cv2.inRange(pic, lowerRange, upperRange)
     # apply morphological opening
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
     pic = cv2.morphologyEx(pic, cv2.MORPH_OPEN, kernel)
@@ -74,30 +85,65 @@ def popupImage(pic):
     cv2.imshow("Result", pic)
     cv2.waitKey()
 
+# This function automatically detects the skin and resize the window to the size of the hand detected
+def applyFilter(filter,pic):
+    rowMin=len(pic);rowMax=0;columnMin=len(pic[0]);columnMax=0
+    for row in range(len(pic)):
+        for column in range(len(pic[row])):
+            if filter[row][column]==0:
+                pic[row][column]=[0,0,0]
+            else:
+                rowMin=min(rowMin,row)
+                rowMax=max(rowMax,row)
+                columnMin=min(columnMin,column)
+                columnMax=max(columnMax,column)
+    if (rowMax>rowMin and columnMax>columnMin):
+        pic=pic[rowMin:rowMax,columnMin:columnMax]
+    try:
+        pic=cv2.resize(pic,(100,100))
+    except:
+        pass
+    return pic
+
+# This function will be called in VideoCapture.py.
+# Inputs: src<- the image, file_index<-the index of the image, or any file name you would like to name the image.
+# saveImages<- boolean variable. The function will save the images if it's true.
+# Outputs: cropped 100*100 image of the hand.
+def imageProcessingForVideos(src,file_index,saveImages):
+    gray_pic = cv2.cvtColor(cv2.cvtColor(src, cv2.cv.CV_BGR2GRAY), cv2.cv.CV_GRAY2BGR)
+    # Apply skin filter on the source image
+    filtered = filterImage(src)
+    # Apply the filter on the gray image and automatically crop the image so that the hand could takes up the whole screen
+    gray_pic=applyFilter(filtered,gray_pic)
+    if saveImages==True:
+        cv2.imwrite( dir+"//video_images//"+str(file_index)+".png", gray_pic );
+    #Saves the processed and filtered gray picture.
+
+    return gray_pic
+
 # The main function that accepts an image and returns a gray image with convex points
 def main(src, popup):
     blank_pic = np.zeros((len(src), len(src[0]), 3), np.uint8)
     gray_pic = cv2.cvtColor(cv2.cvtColor(src, cv2.cv.CV_BGR2GRAY), cv2.cv.CV_GRAY2BGR)
-    
-    #filtered = cv2.blur(src, (3, 3))
+    color_pic=src
     filtered = filterImage(src)
-    
-    contours = findCannyContour(filtered)
-    if (contours == []):
-        print "No contours found"
-        return gray_pic
-    
-    convex_pts = findConvexHull(contours)
-    if convex_pts is None:
-        print "No convex points found"
-        return gray_pic
-    
-    gray_pic = formImage(gray_pic, convex_pts, contours)
+    gray_pic=applyFilter(filtered,gray_pic)
+    # contours = findCannyContour(gray_pic)
+    # if (contours == []):
+    #     print "No contours found"
+    #     return gray_pic
+    #
+    # convex_pts = findConvexHull(contours)
+    # if convex_pts is None:
+    #     print "No convex points found"
+    #     return gray_pic
+    #
+    # gray_pic = formImage(gray_pic, convex_pts, contours)
     if popup:
         popupImage(gray_pic)
     return gray_pic
 
-#main(cv2.imread(dir+"//hand pics//10.jpg"), True)
+#main(cv2.imread(dir+"//shp_marcel_train//Five//Five-train300.jpg"), True)
 
 
 '''
