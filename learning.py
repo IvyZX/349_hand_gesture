@@ -8,7 +8,8 @@ dir = os.path.dirname(__file__)
 # Suppose the data set is a list of data
 # in which each data is [image, gesture_id]
 
-# implement the nearest neighbor for now
+# implement the nearest neighbor
+# basically, find the existed picture with the highest similarity
 def findNearestGesture(data_set, hand_pic):
     max_sim = 0
     gesture_id = -1
@@ -19,8 +20,9 @@ def findNearestGesture(data_set, hand_pic):
             gesture_id = data[1]
     return gesture_id, max_sim
 
-# return a difference that ranges in between 0-1
+# return a similarity rating that ranges in between 0-1
 # is the percentage that the common pixel occupies the whole hand
+# all non-black pixels are considered the same here, assuming it's only black&white
 def computeDifference(data_pic, hand_pic):
     total = 0
     common = 0
