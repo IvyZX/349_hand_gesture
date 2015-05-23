@@ -105,6 +105,18 @@ def applyFilter(filter,pic):
         pass
     return pic
 
+
+# This function will rotate the whole picture by an angle
+# may use it later
+def rotateImage(pic, angle):
+    pt = (len(pic)*0.5, len(pic[0])*0.5)
+    rot = cv2.getRotationMatrix2D(pt, angle, 1.0)
+    new = cv2.warpAffline(pic, r, (1.7*len(pic), 1.7*len(pic[0])))
+    return new
+
+
+
+
 # This function will be called in VideoCapture.py.
 # Inputs: src<- the image, file_index<-the index of the image, or any file name you would like to name the image.
 # saveImages<- boolean variable. The function will save the images if it's true.
