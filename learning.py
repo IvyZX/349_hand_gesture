@@ -15,7 +15,7 @@ def most_common(lst):
 
 # implement the k nearest neighbor
 # basically, find the existed picture with the highest similarity
-def findNearestGesture(data_set, hand_pic,k=5):
+def findNearestGesture(data_set, hand_pic,k=3):
     #k=int(math.sqrt(len(data_set)))
     sim_gesture_array=[]
     for data in data_set:
@@ -35,9 +35,10 @@ def findNearestGesture(data_set, hand_pic,k=5):
 def computeDifference(data_pic, hand_pic):
     # This method is 150x faster (Did not test the accuracy)
     diff=np.subtract(data_pic,hand_pic)
+    diff = np.square(diff)
     return float(diff.sum())
 
-    """
+    '''
     total = 0
     common = 0
     black = np.zeros((3), np.uint8)
@@ -49,9 +50,11 @@ def computeDifference(data_pic, hand_pic):
                 if not np.array_equal(data_pic[row][col], black):
                     common += 1
     return float(common)/float(total)
-    """
+    '''
+    
 
-# The main training/outputting data set function.It automatically reads directories in video_images and assume pictures
+# The main training/outputting data set function.
+# It automatically reads directories in video_images and assume pictures
 # in the same folder belongs to same category
 # It returns a list of data in which each data is [image, gesture_id]
 def mainTrain(): # (file_dir=dir, file_list=None, ges_id_list=None):
@@ -77,7 +80,7 @@ def mainTrain(): # (file_dir=dir, file_list=None, ges_id_list=None):
 # It will automatically call the findNearestGesture and determine the performance of our algorithm
 # Input: precision recall file name, and true-false table file name
 # Output: nothing, but writes the results into two files.
-def tenFoldCrossValidation(precisionRecallFileName='precisionRecallFile.csv',trueFalseTableFileName='trueFalseTable.csv'):
+def tenFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionRecallFile.csv',trueFalseTableFileName='trueFalseTable.csv'):
     # Initialize Precisions and Recall values
     precision=0.0
     recall=0.0
@@ -100,7 +103,7 @@ def tenFoldCrossValidation(precisionRecallFileName='precisionRecallFile.csv',tru
         # Validating
         counter=0.0
         for data in validation_data_set:
-            gesture_id, max_sim=findNearestGesture(training_data_set, data[0])
+            gesture_id, max_sim=findNearestGesture(training_data_set, data[0], neighbor_num)
             if gesture_id==data[1]:
                 truePos[data[1]]+=1
             else:
@@ -123,7 +126,7 @@ def tenFoldCrossValidation(precisionRecallFileName='precisionRecallFile.csv',tru
         precisionRecallFile.write('Training started on: '+str(now)+'\n')
         precisionRecallFile.write('Precision,Recall,F1\n')
         precisionRecallFile.write(str(precision)+','+str(recall)+','+str(f1)+'\n')
-        print (str(precision)+','+str(recall)+','+str(f1)+'\n')
+    print ('Precision: '+str(precision)+', Recall: '+str(recall)+', F1: '+str(f1)+'\n')
     return
 
 startTime=datetime.datetime.now()
