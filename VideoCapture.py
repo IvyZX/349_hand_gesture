@@ -1,7 +1,7 @@
 __author__ = 'Jerry'
 import numpy as np
 import cv2
-import contours
+import contours,handDetection
 import os,datetime
 
 def main(saveImages=False):
@@ -18,7 +18,8 @@ def main(saveImages=False):
     while(True):
         # Capture frame-by-frame
         ret, frame = cap.read()
-
+        if frame==None:
+            continue
         # Our operations on the frame come here
         gray = cv2.blur(frame, (3, 3))
 
@@ -34,9 +35,17 @@ def main(saveImages=False):
         #gray = cv2.blur(frame, (3, 3))
         # Process the image and apply skin detection. Get the 100*100 cropped image
         try:
-            filtered_pic=contours.imageProcessingForVideos(frame,startTime+str(file_index),saveImages)
+            if frame!=None:
+                filtered_pic=handDetection.detect_hand(frame)
+                filtered_pic=handDetection.detect_face(filtered_pic)
+                filtered_pic=handDetection.detect_eye(filtered_pic)
+
         except:
-            print 'error'
+            pass
+        # try:
+        #     filtered_pic=contours.imageProcessingForVideos(frame,startTime+str(file_index),saveImages)
+        # except:
+        #     print 'error'
         # Display the resulting frame
         cv2.imshow('frame',gray)
         cv2.imshow("BW", filtered_pic)
@@ -48,4 +57,6 @@ def main(saveImages=False):
     cv2.destroyAllWindows()
 
 # If you would like to record the images, change the input to True
+# Note: It's not recording the images yet because I've commented out the recording part.
+# I am testing the new function to capture hand/face/eyes
 main(False)
