@@ -129,17 +129,18 @@ def tenFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionRec
     print ('Precision: '+str(precision)+', Recall: '+str(recall)+', F1: '+str(f1)+'\n')
     return
 
-startTime=datetime.datetime.now()
-# If you want to do a single image:
-# data_set = mainTrain()
-# test_pic = cv2.imread(dir+'//video_images//C//11.png')
-# print(findNearestGesture(data_set, test_pic))
+if __name__ == "__main__":
+    startTime=datetime.datetime.now()
+    # If you want to do a single image:
+    # data_set = mainTrain()
+    # test_pic = cv2.imread(dir+'//video_images//C//11.png')
+    # print(findNearestGesture(data_set, test_pic))
 
-# If you want to do the ten fold cross validation. (Which takes super long for our KNN algorithm)
-tenFoldCrossValidation()
+    # If you want to do the ten fold cross validation. (Which takes super long for our KNN algorithm)
+    tenFoldCrossValidation()
 
-endTime=datetime.datetime.now()
-print 'Total time: '+str(endTime-startTime)
+    endTime=datetime.datetime.now()
+    print 'Total time: '+str(endTime-startTime)
 
 # Changelog
 # Jerry 05/25/2015
