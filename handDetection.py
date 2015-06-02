@@ -2,6 +2,7 @@ __author__ = 'Ivy'
 import cv2
 import numpy as np
 import os, math
+import contours
 dir = os.path.dirname(__file__)
 
 # This is the hand detection function that uses Haar Cascade to detect hand (in good, bright lighting conditions)
@@ -25,11 +26,13 @@ def detect_hand(image):
         flags=cv2.cv.CV_HAAR_SCALE_IMAGE
     )
     # Draw a rectangle around the hands
-    for (x, y, w, h) in hands:
+    for (x, y, w, h) in hands[:1]:
         cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
+        saved = image[y:(y+h), x:(x+w)]
+        saved = cv2.resize(saved, (100, 100))
     #cv2.imshow("Faces found", image)
     #cv2.waitKey(0)
-    return image
+    return image, saved
 
 # Similar function but used a different cascade file
 def detect_face(image):
@@ -69,6 +72,7 @@ def detect_eye(image):
     #cv2.waitKey(0)
     return image
 
+'''
 
 # blur and filter the image before finding contours
 def filterImage(src):
@@ -223,6 +227,7 @@ def main(src, popup):
 
 #main(cv2.imread(dir+"//shp_marcel_train//Five//Five-train300.jpg"), True)
 detect_hand(cv2.imread(dir+"//video_images//A//11.png"))
+'''
 
 '''
 

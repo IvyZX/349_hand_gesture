@@ -1,7 +1,8 @@
 __author__ = 'Jerry'
 import numpy as np
 import cv2
-import contours,handDetection
+import contours
+import handDetection
 import os,datetime
 
 def main(saveImages=False):
@@ -18,30 +19,20 @@ def main(saveImages=False):
     while(True):
         # Capture frame-by-frame
         ret, frame = cap.read()
-        if frame==None:
+        if type(frame)==type(None):
             continue
         # Our operations on the frame come here
         gray = cv2.blur(frame, (3, 3))
-
-        '''
-        blank_pic = np.zeros((len(gray), len(gray[0]), 3), np.uint8)
-        canny = cv2.Canny(gray, thresh, thresh*2, 3)
-        result = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE, (0, 0))
-        contours = result[0]
-        hierarchy = result[1]
-        for i in range(len(contours)):
-            cv2.drawContours(blank_pic, contours, i, (0, 0, 255), 1, 8, hierarchy, 0)
-        '''
-        #gray = cv2.blur(frame, (3, 3))
+        
         # Process the image and apply skin detection. Get the 100*100 cropped image
         try:
-            if frame!=None:
-                filtered_pic=handDetection.detect_hand(frame)
-                filtered_pic=handDetection.detect_face(filtered_pic)
-                filtered_pic=handDetection.detect_eye(filtered_pic)
+            if type(frame)!=type(None):
+                filtered_pic, small =handDetection.detect_hand(frame)
+                # filtered_pic=handDetection.detect_face(filtered_pic)
+                # filtered_pic=handDetection.detect_eye(filtered_pic)
 
         except:
-            pass
+            print('no hand found')
         # try:
         #     filtered_pic=contours.imageProcessingForVideos(frame,startTime+str(file_index),saveImages)
         # except:
@@ -49,6 +40,7 @@ def main(saveImages=False):
         # Display the resulting frame
         cv2.imshow('frame',gray)
         cv2.imshow("BW", filtered_pic)
+        cv2.imshow("small", small)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         file_index+=1
