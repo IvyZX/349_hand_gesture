@@ -2,6 +2,7 @@ __author__ = 'Ivy'
 import cv2
 import numpy as np
 import os, math
+
 dir = os.path.dirname(__file__)
 
 # blur and filter the image before finding contours
@@ -10,7 +11,7 @@ def filterImage(src):
     pic = cv2.blur(src, (3, 3))
     pic = cv2.GaussianBlur(pic, (11, 11), 0)
     pic = cv2.medianBlur(pic, 11)
-    #print pic
+    # print pic
     pic = cv2.cvtColor(pic, cv2.cv.CV_BGR2HSV)
     # apply threshold on hsv values to detect skin color
     #print pic
@@ -20,8 +21,8 @@ def filterImage(src):
     # 0.2<=S<=0.6
     # 0<=H<=25 or 335<=H<=360
 
-    lowerRange=np.array([0,51,40])
-    upperRange=np.array([25,253,255])
+    lowerRange = np.array([0, 31, 40])
+    upperRange = np.array([25, 133, 255])
     #pic = cv2.inRange(pic, (0, 40, 80, 255), (50, 225, 255, 255))
     pic = cv2.inRange(pic, lowerRange, upperRange)
     # apply morphological opening
@@ -34,7 +35,7 @@ def filterImage(src):
 # return the contour and hierarchy of the canny contour
 def findCannyContour(pic):
     thresh = 100
-    canny = cv2.Canny(pic, thresh, thresh*2, 3)
+    canny = cv2.Canny(pic, thresh, thresh * 2, 3)
     result = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE, (0, 0))
     contours = result[0]
     hierarchy = result[1]
@@ -52,23 +53,25 @@ def findCannyContour(pic):
     contour = cv2.approxPolyDP(contour, 2, False)
     return [contour]
 
+
 # return points of the convex hull
 def findConvexHull(contours):
-    hull=cv2.convexHull(contours[0],returnPoints=False)
+    hull = cv2.convexHull(contours[0], returnPoints=False)
     if hull is None:
         return
-    defects=cv2.convexityDefects(contours[0],hull)
+    defects = cv2.convexityDefects(contours[0], hull)
     if defects is None:
         return
     convex_pts = [None] * defects.shape[0]
-    #find the convex points and the lines connecting the hand's convex hull points
+    # find the convex points and the lines connecting the hand's convex hull points
     for i in range(defects.shape[0]):
-        s,e,f,d = defects[i,0]
+        s, e, f, d = defects[i, 0]
         start = tuple(contours[0][s][0])
         end = tuple(contours[0][e][0])
         far = tuple(contours[0][f][0])
         convex_pts[i] = [start, end, far]
     return convex_pts
+
 
 # given the contours and convex points, draw them on the image and return it
 def formImage(blank_pic, convex_pts, contours):
@@ -80,27 +83,33 @@ def formImage(blank_pic, convex_pts, contours):
         cv2.drawContours(blank_pic, contours, i, (0, 0, 255), 1, 8)
     return blank_pic
 
+
 # form a pop-up window that shows the images
 def popupImage(pic):
     cv2.imshow("Result", pic)
     cv2.waitKey()
 
+
 # This function automatically detects the skin and resize the window to the size of the hand detected
-def applyFilter(filter,pic):
-    rowMin=len(pic);rowMax=0;columnMin=len(pic[0]);columnMax=0
+# filter is in gray mode and pic is in bgr mode
+def resizeByFilter(filter, pic):
+    rowMin = len(pic)
+    rowMax = 0
+    columnMin = len(pic[0])
+    columnMax = 0
     for row in range(len(pic)):
         for column in range(len(pic[row])):
-            if filter[row][column]==0:
-                pic[row][column]=[0,0,0]
+            if filter[row][column] == 0:
+                pic[row][column] = [0, 0, 0]
             else:
-                rowMin=min(rowMin,row)
-                rowMax=max(rowMax,row)
-                columnMin=min(columnMin,column)
-                columnMax=max(columnMax,column)
-    if (rowMax>rowMin and columnMax>columnMin):
-        pic=pic[rowMin:rowMax,columnMin:columnMax]
+                rowMin = min(rowMin, row)
+                rowMax = max(rowMax, row)
+                columnMin = min(columnMin, column)
+                columnMax = max(columnMax, column)
+    if (rowMax > rowMin and columnMax > columnMin):
+        pic = pic[rowMin:rowMax, columnMin:columnMax]
     try:
-        pic=cv2.resize(pic,(100,100))
+        pic = cv2.resize(pic, (100, 100))
     except:
         pass
     return pic
@@ -109,54 +118,51 @@ def applyFilter(filter,pic):
 # This function will rotate the whole picture by an angle
 # may use it later
 def rotateImage(pic, angle):
-    pt = (len(pic)*0.5, len(pic[0])*0.5)
+    pt = (len(pic) * 0.5, len(pic[0]) * 0.5)
     rot = cv2.getRotationMatrix2D(pt, angle, 1.0)
-    new = cv2.warpAffline(pic, r, (1.7*len(pic), 1.7*len(pic[0])))
+    new = cv2.warpAffline(pic, rot, (1.7 * len(pic), 1.7 * len(pic[0])))
     return new
-
-
 
 
 # This function will be called in VideoCapture.py.
 # Inputs: src<- the image, file_index<-the index of the image, or any file name you would like to name the image.
 # saveImages<- boolean variable. The function will save the images if it's true.
 # Outputs: cropped 100*100 image of the hand.
-def imageProcessingForVideos(src,file_index,saveImages):
-    #gray_pic = cv2.cvtColor(cv2.cvtColor(src, cv2.cv.CV_BGR2GRAY), cv2.cv.CV_GRAY2BGR)
-    gray_pic = src
+def imageProcessingForVideos(src, file_index, saveImages):
+    gray_pic = cv2.cvtColor(cv2.cvtColor(src, cv2.cv.CV_BGR2GRAY), cv2.cv.CV_GRAY2BGR)
     # Apply skin filter on the source image
     filtered = filterImage(src)
     # Apply the filter on the gray image and automatically crop the image so that the hand could takes up the whole screen
-    gray_pic=applyFilter(filtered,gray_pic)
-    if saveImages==True:
-        cv2.imwrite( dir+"//video_images//"+str(file_index)+".png", gray_pic );
-    #Saves the processed and filtered gray picture.
+    gray_pic = resizeByFilter(filtered, gray_pic)
+    if saveImages == True:
+        cv2.imwrite(dir + "//video_images//" + str(file_index) + ".png", gray_pic)
+    # Saves the processed and filtered gray picture.
 
     return gray_pic
+
 
 # The main function that accepts an image and returns a gray image with convex points
 def main(src, popup):
     blank_pic = np.zeros((len(src), len(src[0]), 3), np.uint8)
     gray_pic = cv2.cvtColor(cv2.cvtColor(src, cv2.cv.CV_BGR2GRAY), cv2.cv.CV_GRAY2BGR)
-    color_pic=src
+    color_pic = src
     filtered = filterImage(src)
-    gray_pic=applyFilter(filtered,gray_pic)
-    # contours = findCannyContour(gray_pic)
-    # if (contours == []):
-    #     print "No contours found"
-    #     return gray_pic
-    #
-    # convex_pts = findConvexHull(contours)
-    # if convex_pts is None:
-    #     print "No convex points found"
-    #     return gray_pic
-    #
-    # gray_pic = formImage(gray_pic, convex_pts, contours)
+    gray_pic = resizeByFilter(filtered, gray_pic)
+    contours = findCannyContour(gray_pic)
+    if (contours == []):
+        print "No contours found"
+        return gray_pic
+
+    convex_pts = findConvexHull(contours)
+    if convex_pts is None:
+        print "No convex points found"
+        return gray_pic
+    gray_pic = formImage(gray_pic, convex_pts, contours)
     if popup:
         popupImage(gray_pic)
     return gray_pic
 
-#main(cv2.imread(dir+"//shp_marcel_train//Five//Five-train300.jpg"), True)
+#main(cv2.imread(dir+"//video_images//B2//1.png"), True)
 
 
 '''
