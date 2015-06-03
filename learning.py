@@ -19,6 +19,7 @@ def findNearestGesture(data_set, hand_pic,k=3):
     #k=int(math.sqrt(len(data_set)))
     sim_gesture_array=[]
     for data in data_set:
+        
         sim = computeDifference(data[0], hand_pic)
         sim_gesture_array.append([sim,data[1]])
     # Note: The sorting here is smaller numbers first.
