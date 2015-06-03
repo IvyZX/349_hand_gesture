@@ -21,7 +21,7 @@ def filterImage(src):
     # 0<=H<=25 or 335<=H<=360
 
     lowerRange=np.array([0,51,40])
-    upperRange=np.array([25,153,255])
+    upperRange=np.array([25,253,255])
     #pic = cv2.inRange(pic, (0, 40, 80, 255), (50, 225, 255, 255))
     pic = cv2.inRange(pic, lowerRange, upperRange)
     # apply morphological opening
@@ -122,7 +122,8 @@ def rotateImage(pic, angle):
 # saveImages<- boolean variable. The function will save the images if it's true.
 # Outputs: cropped 100*100 image of the hand.
 def imageProcessingForVideos(src,file_index,saveImages):
-    gray_pic = cv2.cvtColor(cv2.cvtColor(src, cv2.cv.CV_BGR2GRAY), cv2.cv.CV_GRAY2BGR)
+    #gray_pic = cv2.cvtColor(cv2.cvtColor(src, cv2.cv.CV_BGR2GRAY), cv2.cv.CV_GRAY2BGR)
+    gray_pic = src
     # Apply skin filter on the source image
     filtered = filterImage(src)
     # Apply the filter on the gray image and automatically crop the image so that the hand could takes up the whole screen

@@ -31,9 +31,11 @@ def main(saveImages=False):
             filtered_pic=gray
             small=gray
         # Process the image and apply skin detection. Get the 100*100 cropped image
-        try:
-            if type(frame)!=type(None):
-                filtered_pic, small =handDetection.detect_hand(frame)
+        #try:
+        if type(frame)!=type(None):
+            filtered_pic, small =handDetection.detect_hand(frame)
+            if type(small)!=type(None):
+                #small=contours.imageProcessingForVideos(small,startTime+str(file_index),saveImages)
                 # filtered_pic=handDetection.detect_face(filtered_pic)
                 # filtered_pic=handDetection.detect_eye(filtered_pic)
                 if saveImages==True:
@@ -44,11 +46,11 @@ def main(saveImages=False):
                 ###
                 ### Comment this part out if you do not want to estimate which gesture is the current hand.
                 ###
-                gesture_id, max_sim=learning.findNearestGesture(data_set,small,3)
-                print 'ID:'+str(gesture_id)+' max similarity:'+str(max_sim)
-        except:
+                #gesture_id, max_sim=learning.findNearestGesture(data_set,small,3)
+                #print 'ID:'+str(gesture_id)+' max similarity:'+str(max_sim)
+        #except:
             #print('no hand found')
-            pass
+            #pass
         # try:
         #     filtered_pic=contours.imageProcessingForVideos(frame,startTime+str(file_index),saveImages)
         # except:
@@ -56,7 +58,8 @@ def main(saveImages=False):
         # Display the resulting frame
         cv2.imshow('frame',gray)
         cv2.imshow("BW", filtered_pic)
-        cv2.imshow("small", small)
+        if small!=None:
+            cv2.imshow("small", small)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

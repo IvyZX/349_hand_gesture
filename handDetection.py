@@ -32,6 +32,8 @@ def detect_hand(image):
         saved = cv2.resize(saved, (100, 100))
     #cv2.imshow("Faces found", image)
     #cv2.waitKey(0)
+    if len(hands)==0:
+        return image ,None
     return image, saved
 
 # Similar function but used a different cascade file

@@ -18,8 +18,8 @@ def most_common(lst):
 def findNearestGesture(data_set, hand_pic,k=3):
     #k=int(math.sqrt(len(data_set)))
     sim_gesture_array=[]
+    hand_pic = cv2.cvtColor(hand_pic, cv2.cv.CV_BGR2GRAY)
     for data in data_set:
-        
         sim = computeDifference(data[0], hand_pic)
         sim_gesture_array.append([sim,data[1]])
     # Note: The sorting here is smaller numbers first.
@@ -73,6 +73,11 @@ def mainTrain(): # (file_dir=dir, file_list=None, ges_id_list=None):
                 pic = cv2.imread(ges_folder_list[category+1]+'//'+i)
                 #pic = contours.main(pic, False)
                 data_set.append([pic, file_list[0][category]])
+    for data in data_set:
+        if data[0].shape!=(100,100):
+            #filtered=contours.filterImage(data[0])
+            #data[0]=contours.applyFilter(filtered,data[0])
+            data[0] = cv2.cvtColor(data[0], cv2.cv.CV_BGR2GRAY)
     return data_set
 
 
