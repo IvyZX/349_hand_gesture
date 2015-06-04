@@ -92,7 +92,8 @@ def popupImage(pic):
 
 # This function automatically detects the skin and resize the window to the size of the hand detected
 # filter is in gray mode and pic is in bgr mode
-def resizeByFilter(filter, pic):
+def resizeByFilter(filter, original):
+    pic = np.copy(original)
     rowMin = len(pic)
     rowMax = 0
     columnMin = len(pic[0])

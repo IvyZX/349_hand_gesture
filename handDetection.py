@@ -41,7 +41,7 @@ def detect_hand(image):
 def chopImage(image, chop_size):
     if chop_size:
         x, y, w, h = chop_size
-        margin_w, margin_h = w/4, h/4
+        margin_w, margin_h = w/2, h/2
         max_x, max_y = len(image[0]), len(image)
         image = image[max(0, (y-margin_h)):min(max_y, (y+h+margin_h)),
                 max(0, (x-margin_w)):min(max_x, (x+w+margin_w))]
@@ -51,7 +51,8 @@ def chopImage(image, chop_size):
         img_area = (y+h+2*margin_h)*(x+w+2*margin_w)
         area = cv2.contourArea(cont[0])
         ratio = area/float(img_area)
-        if (ratio > 0.1):
+        # print ratio
+        if (ratio > 0.01):
             # filtered = cv2.fillPoly(small_gray, cont, (255, 255, 255))
             filtered = np.copy(small_gray)
             # filtered = contours.formImage(filtered, [], cont)
@@ -61,8 +62,8 @@ def chopImage(image, chop_size):
                 for col in range(len(filtered[0])):
                     if (filtered[row][col] != 255):
                         filtered[row][col] = 0
-            contours.resizeByFilter(filtered, small_gray)
-            return cv2.resize(small_gray, (100, 100))
+            output = contours.resizeByFilter(filtered, small_gray)
+            return cv2.resize(output, (100, 100))
     filtered = contours.filterImage(image)
     return None
     # small = contours.resizeByFilter(filtered, small_gray)

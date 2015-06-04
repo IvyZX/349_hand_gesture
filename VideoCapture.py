@@ -6,7 +6,7 @@ import handDetection, learning
 import os, datetime
 
 
-def main(saveImages=False):
+def main(saveImages=False, doTest=False):
     dir = os.path.dirname(__file__)
     data_set = learning.mainTrain()
     # thresh = 100
@@ -41,16 +41,16 @@ def main(saveImages=False):
                 # filtered_pic=handDetection.detect_eye(filtered_pic)
                 if saveImages == True:
                     # Backup the original pictures and the ones with rectangles around them.
-                    cv2.imwrite(dir + '//video_images_backup//' + startTime + 'colored//' + str(file_index) + ".png",
-                                gray)
-                    cv2.imwrite(dir + '//video_images_backup//' + startTime + 'rect//' + str(file_index) + ".png",
-                                filtered_pic);
+                    #cv2.imwrite(dir + '//video_images_backup//'+ startTime+'colored//'+str(file_index)+".png", gray)
+                    #cv2.imwrite(dir + '//video_images_backup//'+ startTime+'rect//'+str(file_index)+".png",filtered_pic)
                     cv2.imwrite(dir + '//video_images//' + startTime + str(file_index) + ".png", small);
                     ###
                     ### Comment this part out if you do not want to estimate which gesture is the current hand.
                     ###
-                    #gesture_id, max_sim=learning.findNearestGesture(data_set,small,3)
-                    #print 'ID:'+str(gesture_id)+' max similarity:'+str(max_sim)
+                elif doTest == True:
+                    print "start recognizing gesture..."
+                    gesture_id, max_sim=learning.findNearestGesture(data_set,small,3)
+                    print 'ID:'+str(gesture_id)+' max similarity:'+str(max_sim)
                     #except:
                     #print('no hand found')
                     #pass
@@ -74,4 +74,4 @@ def main(saveImages=False):
 # If you would like to record the images, change the input to True
 # Note: It's not recording the images yet because I've commented out the recording part.
 # I am testing the new function to capture hand/face/eyes
-main(False)
+main(saveImages=False, doTest=True)
