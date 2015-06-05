@@ -8,7 +8,8 @@ import os, datetime
 
 def main(saveImages=False, doTest=False):
     dir = os.path.dirname(__file__)
-    data_set = learning.mainTrain()
+    if doTest:
+        data_set = learning.mainTrain()
     # thresh = 100
     # This will make a folder for the images taken from video. The images will be labeled starting from 1.
     startTime = datetime.datetime.now().strftime("%B %d %Y %H %M %S") + '//'
@@ -74,4 +75,4 @@ def main(saveImages=False, doTest=False):
 # If you would like to record the images, change the input to True
 # Note: It's not recording the images yet because I've commented out the recording part.
 # I am testing the new function to capture hand/face/eyes
-main(saveImages=False, doTest=True)
+main(saveImages=True, doTest=False)

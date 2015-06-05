@@ -19,7 +19,8 @@ def most_common(lst):
 def findNearestGesture(data_set, hand_pic, k=3):
     # k=int(math.sqrt(len(data_set)))
     sim_gesture_array = []
-    hand_pic = cv2.cvtColor(hand_pic, cv2.cv.CV_BGR2GRAY)
+    if hand_pic.shape!=(100,100):
+        hand_pic = cv2.cvtColor(hand_pic, cv2.cv.CV_BGR2GRAY)
     for data in data_set:
         sim = computeDifference(data[0], hand_pic)
         sim_gesture_array.append([sim, data[1]])
@@ -140,6 +141,65 @@ def tenFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionRec
     print ('Precision: ' + str(precision) + ', Recall: ' + str(recall) + ', F1: ' + str(f1) + '\n')
     return
 
+def threeFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionRecallFile.csv',
+                           trueFalseTableFileName='trueFalseTable.csv'):
+    # Initialize Precisions and Recall values
+    precision = 0.0
+    recall = 0.0
+    now = datetime.datetime.now()
+    with open(trueFalseTableFileName, 'a') as trueFalseTableFile:
+        trueFalseTableFile.write('Training started on: ' + str(now) + '\n')
+        trueFalseTableFile.write('Trial Number,Gesture,True Positives,False Positives,False Negatives\n')
+    for i in range(3, 6):
+
+        data_set = mainTrain()
+        # shuffle the list (in the same manner every time) so that there's an equal chance to get positives/negatives
+        random.seed(0)
+        random.shuffle(data_set)
+        training_data_set=[]
+        validation_data_set=[]
+        for data in data_set:
+            if data[1][-1]==str(i):
+                validation_data_set.append(data)
+            else:
+                training_data_set.append(data)
+        # Initialize counters to calculate precision recall
+        falsePos = collections.defaultdict(float);
+        falseNeg = collections.defaultdict(float);
+        truePos = collections.defaultdict(float);
+
+        # Validating
+        counter = 0.0
+        for data in validation_data_set:
+            gesture_id, max_sim = findNearestGesture(training_data_set, data[0], neighbor_num)
+            if gesture_id[:-1] == data[1][:-1]:
+                truePos[data[1][:-1]] += 1
+            else:
+                falsePos[gesture_id[:-1]] += 1
+                falseNeg[data[1][:-1]] += 1
+            counter += 1
+            if counter % 10 == 0:
+                sys.stdout.write('\rtrial ' + str(i) + ':' + str(counter / len(validation_data_set) * 100) + '% Done')
+        sumTruePos = sum(truePos.values());
+        sumFalsePos = sum(falsePos.values());
+        sumFalseNeg = sum(falseNeg.values())
+        precision += (sumTruePos / (sumTruePos + sumFalsePos))
+        recall += (sumTruePos / (sumTruePos + sumFalseNeg))
+        with open(trueFalseTableFileName, 'a') as trueFalseTableFile:
+            for key in truePos.keys():
+                trueFalseTableFile.write(
+                    'trial ' + str(i) + ',' + str(key) + ',' + str(truePos[key]) + ',' + str(falsePos[key]) + ',' + str(
+                        falseNeg[key]) + '\n')
+                #print (str(truePos)+','+str(falsePos))
+    precision /= 3
+    recall /= 3
+    f1 = 2 * precision * recall / (precision + recall)
+    with open(precisionRecallFileName, 'a') as precisionRecallFile:
+        precisionRecallFile.write('Training started on: ' + str(now) + '\n')
+        precisionRecallFile.write('Precision,Recall,F1\n')
+        precisionRecallFile.write(str(precision) + ',' + str(recall) + ',' + str(f1) + '\n')
+    print ('Precision: ' + str(precision) + ', Recall: ' + str(recall) + ', F1: ' + str(f1) + '\n')
+    return
 
 if __name__ == "__main__":
     startTime = datetime.datetime.now()
@@ -149,8 +209,8 @@ if __name__ == "__main__":
     # print(findNearestGesture(data_set, test_pic))
 
     # If you want to do the ten fold cross validation. (Which takes super long for our KNN algorithm)
-    tenFoldCrossValidation()
-
+    #tenFoldCrossValidation()
+    threeFoldCrossValidation()
     endTime = datetime.datetime.now()
     print 'Total time: ' + str(endTime - startTime)
 

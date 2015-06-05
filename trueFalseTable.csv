@@ -564,3 +564,122 @@ Training started on: 2015-06-01 23:57:30.994000
 Trial Number,Gesture,True Positives,False Positives,False Negatives
 Training started on: 2015-06-02 00:01:19.066000
 Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:24:55.625000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:26:03.572000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:26:14.223000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:27:01.501000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:27:12.499000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:32:40.560000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:33:56.893000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:34:17.816000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+trial 3,C3,171.0,0.0,7.0
+trial 3,One3,8.0,0.0,88.0
+trial 3,Five3,114.0,0.0,1.0
+trial 4,Five4,72.0,0.0,4.0
+trial 4,Three4,12.0,0.0,126.0
+trial 4,Four4,48.0,0.0,50.0
+trial 4,B4,3.0,0.0,70.0
+trial 4,One4,78.0,0.0,96.0
+trial 4,A4,74.0,0.0,35.0
+trial 4,Two4,24.0,0.0,64.0
+trial 4,C4,25.0,0.0,38.0
+trial 5,Five5,83.0,0.0,10.0
+trial 5,Three5,25.0,0.0,25.0
+trial 5,Four5,38.0,0.0,75.0
+trial 5,B5,18.0,0.0,51.0
+trial 5,A5,3.0,0.0,96.0
+trial 5,One5,31.0,0.0,94.0
+trial 5,Two5,35.0,0.0,47.0
+trial 5,C5,53.0,0.0,67.0
+Training started on: 2015-06-05 15:44:25.925000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:51:57.655000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+Training started on: 2015-06-05 15:52:07.031000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+trial 3,C,171.0,4.0,7.0
+trial 3,Five,114.0,532.0,1.0
+trial 3,One,8.0,9.0,88.0
+trial 4,A,74.0,67.0,35.0
+trial 4,C,25.0,6.0,38.0
+trial 4,B,3.0,4.0,70.0
+trial 4,Three,12.0,12.0,126.0
+trial 4,Two,24.0,79.0,64.0
+trial 4,One,78.0,55.0,96.0
+trial 4,Four,48.0,40.0,50.0
+trial 4,Five,72.0,220.0,4.0
+trial 5,A,3.0,0.0,96.0
+trial 5,C,53.0,58.0,67.0
+trial 5,B,18.0,24.0,51.0
+trial 5,Three,25.0,111.0,25.0
+trial 5,Two,35.0,134.0,47.0
+trial 5,Four,38.0,36.0,75.0
+trial 5,Five,78.0,71.0,15.0
+trial 5,One,31.0,21.0,94.0
+Training started on: 2015-06-05 16:19:11.731000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+trial 3,A,72.0,0.0,40.0
+trial 3,C,173.0,5.0,5.0
+trial 3,B,4.0,0.0,126.0
+trial 3,Three,1.0,2.0,40.0
+trial 3,Two,2.0,10.0,105.0
+trial 3,One,62.0,106.0,34.0
+trial 3,Five,114.0,337.0,1.0
+trial 4,A,51.0,6.0,58.0
+trial 4,C,35.0,7.0,18.0
+trial 4,B,38.0,2.0,33.0
+trial 4,Two,17.0,47.0,60.0
+trial 4,Three,43.0,9.0,66.0
+trial 4,One,24.0,30.0,150.0
+trial 4,Four,54.0,19.0,44.0
+trial 4,Five,74.0,311.0,2.0
+trial 5,A,3.0,0.0,50.0
+trial 5,C,55.0,25.0,64.0
+trial 5,B,22.0,9.0,47.0
+trial 5,Three,19.0,23.0,31.0
+trial 5,Two,26.0,52.0,9.0
+trial 5,Four,45.0,78.0,68.0
+trial 5,Five,91.0,101.0,2.0
+trial 5,One,86.0,13.0,30.0
+Training started on: 2015-06-05 16:27:23.638000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+trial 3,Four,1.0,1.0,108.0
+trial 3,C,172.0,0.0,6.0
+trial 3,Five,115.0,560.0,0.0
+trial 3,Three,7.0,0.0,34.0
+trial 3,Two,1.0,3.0,106.0
+trial 4,C,49.0,24.0,4.0
+trial 4,Two,2.0,16.0,75.0
+trial 4,Three,9.0,1.0,100.0
+trial 4,Four,17.0,89.0,81.0
+trial 4,Five,5.0,269.0,71.0
+trial 4,One,46.0,239.0,128.0
+Training started on: 2015-06-05 16:29:59.804000
+Trial Number,Gesture,True Positives,False Positives,False Negatives
+trial 3,C,173.0,4.0,5.0
+trial 3,Five,110.0,563.0,5.0
+trial 3,One,22.0,11.0,74.0
+trial 4,A,74.0,16.0,35.0
+trial 4,C,23.0,6.0,30.0
+trial 4,B,41.0,4.0,30.0
+trial 4,Three,18.0,14.0,91.0
+trial 4,Two,16.0,46.0,61.0
+trial 4,One,65.0,66.0,109.0
+trial 4,Four,58.0,38.0,40.0
+trial 4,Five,74.0,208.0,2.0
+trial 5,A,3.0,0.0,50.0
+trial 5,C,104.0,70.0,15.0
+trial 5,B,21.0,10.0,48.0
+trial 5,Three,21.0,25.0,29.0
+trial 5,Two,22.0,46.0,13.0
+trial 5,Four,52.0,48.0,61.0
+trial 5,Five,84.0,72.0,9.0
+trial 5,One,50.0,20.0,66.0
