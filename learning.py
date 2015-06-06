@@ -201,6 +201,31 @@ def threeFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionR
     print ('Precision: ' + str(precision) + ', Recall: ' + str(recall) + ', F1: ' + str(f1) + '\n')
     return
 
+def outputArff():
+    reduced_dimension=25
+    data_set = mainTrain()
+    random.seed(0)
+    random.shuffle(data_set)
+    with open('imageData.arff','w') as f:
+        f.write('  % 1. Title: EECS 349 Final Project Data\n')
+        f.write('   @RELATION EECS-349-Final-Project-Data\n')
+
+        for i in range(reduced_dimension**2):
+            f.write('   @ATTRIBUTE '+str(i)+' NUMERIC\n')
+        classes=['A','B','C','One','Two','Three','Four','Five']
+        f.write('@ATTRIBUTE class {A,B,C,One,Two,Three,Four,Five}\n')
+        f.write('   @DATA\n')
+
+        for data in data_set:
+            img=cv2.resize(data[0], (reduced_dimension, reduced_dimension))
+            for i in range(reduced_dimension):
+                for j in range(reduced_dimension):
+                    f.write(str(data[0][i][j])+',')
+            f.write(str(data[1][:-1])+'\n')
+    print 'Successfully written all image data into imageData.arff'
+
+
+
 if __name__ == "__main__":
     startTime = datetime.datetime.now()
     # If you want to do a single image:
@@ -210,7 +235,8 @@ if __name__ == "__main__":
 
     # If you want to do the ten fold cross validation. (Which takes super long for our KNN algorithm)
     #tenFoldCrossValidation()
-    threeFoldCrossValidation()
+    #threeFoldCrossValidation()
+    outputArff()
     endTime = datetime.datetime.now()
     print 'Total time: ' + str(endTime - startTime)
 
