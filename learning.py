@@ -16,7 +16,7 @@ def most_common(lst):
 
 # implement the k nearest neighbor
 # basically, find the existed picture with the highest similarity
-def findNearestGesture(data_set, hand_pic, k=3):
+def findNearestGesture(data_set, hand_pic, k=2):
     # k=int(math.sqrt(len(data_set)))
     sim_gesture_array = []
     if hand_pic.shape!=(100,100):
@@ -26,9 +26,12 @@ def findNearestGesture(data_set, hand_pic, k=3):
         sim_gesture_array.append([sim, data[1]])
     # Note: The sorting here is smaller numbers first.
     # So if you want to test some other methods in computeDifference function, you may change reverse=False to True
-    sim_gesture_array.sort(key=lambda x: x[0], reverse=False)
-    max_sim = sum(v[0] for v in sim_gesture_array[:k]) / float(k)
-    gesture_id = most_common([v[1] for v in sim_gesture_array[:k]])
+    if k==1:
+        [max_sim,gesture_id]=max(sim_gesture_array,key=lambda x: x[0])
+    else:
+        sim_gesture_array.sort(key=lambda x: x[0], reverse=False)
+        max_sim = sum(v[0] for v in sim_gesture_array[:k]) / float(k)
+        gesture_id = most_common([v[1] for v in sim_gesture_array[:k]])
     #print sim_gesture_array[:k]
     return gesture_id, max_sim
 
@@ -56,6 +59,11 @@ def computeDifference(data_pic, hand_pic):
     return float(common)/float(total)
     '''
 
+# Converts all larger-than-0 pixels to 1.
+def convertImgToBinary(pic):
+    for i in range(len(pic)):
+        for j in range(len(pic)):
+            pic[i][j]=int(bool(pic[i][j]))
 
 # The main training/outputting data set function.
 # It automatically reads directories in video_images and assume pictures
@@ -78,6 +86,8 @@ def mainTrain():  # (file_dir=dir, file_list=None, ges_id_list=None):
                 data_set.append([pic, file_list[0][category]])
     for data in data_set:
         data[0] = cv2.cvtColor(data[0], cv2.cv.CV_BGR2GRAY)
+        convertImgToBinary(data[0])
+
     return data_set
 
 
@@ -141,7 +151,7 @@ def tenFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionRec
     print ('Precision: ' + str(precision) + ', Recall: ' + str(recall) + ', F1: ' + str(f1) + '\n')
     return
 
-def threeFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionRecallFile.csv',
+def crossValidationAcrossDifferentPeople(neighbor_num=2, precisionRecallFileName='precisionRecallFile.csv',
                            trueFalseTableFileName='trueFalseTable.csv'):
     # Initialize Precisions and Recall values
     precision = 0.0
@@ -150,7 +160,7 @@ def threeFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionR
     with open(trueFalseTableFileName, 'a') as trueFalseTableFile:
         trueFalseTableFile.write('Training started on: ' + str(now) + '\n')
         trueFalseTableFile.write('Trial Number,Gesture,True Positives,False Positives,False Negatives\n')
-    for i in range(3, 6):
+    for i in range(3, 10):
 
         data_set = mainTrain()
         # shuffle the list (in the same manner every time) so that there's an equal chance to get positives/negatives
@@ -191,8 +201,8 @@ def threeFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionR
                     'trial ' + str(i) + ',' + str(key) + ',' + str(truePos[key]) + ',' + str(falsePos[key]) + ',' + str(
                         falseNeg[key]) + '\n')
                 #print (str(truePos)+','+str(falsePos))
-    precision /= 3
-    recall /= 3
+    precision /= 7
+    recall /= 7
     f1 = 2 * precision * recall / (precision + recall)
     with open(precisionRecallFileName, 'a') as precisionRecallFile:
         precisionRecallFile.write('Training started on: ' + str(now) + '\n')
@@ -235,8 +245,8 @@ if __name__ == "__main__":
 
     # If you want to do the ten fold cross validation. (Which takes super long for our KNN algorithm)
     #tenFoldCrossValidation()
-    #threeFoldCrossValidation()
-    outputArff()
+    crossValidationAcrossDifferentPeople(neighbor_num=2)
+    #outputArff()
     endTime = datetime.datetime.now()
     print 'Total time: ' + str(endTime - startTime)
 

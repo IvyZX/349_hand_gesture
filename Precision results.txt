@@ -1,0 +1,2 @@
+For using all data, 1nn:
+Precision: 0.23

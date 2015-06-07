@@ -50,6 +50,7 @@ def main(saveImages=False, doTest=False):
                     ###
                 elif doTest == True:
                     print "start recognizing gesture..."
+                    learning.convertImgToBinary(small)
                     gesture_id, max_sim=learning.findNearestGesture(data_set,small,3)
                     print 'ID:'+str(gesture_id)+' max similarity:'+str(max_sim)
                     #except:
