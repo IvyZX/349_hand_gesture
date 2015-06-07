@@ -31,6 +31,7 @@ Precision,Recall,F1
 Training started on: 2015-06-07 02:11:18.154000
 Precision,Recall,F1
 0.238353551167,0.238353551167,0.238353551167
+The Following are precision data done with varying nearest neighbor from 1 to 10. The precisions are messed up because I was dividing it by 3(should be 7 because there were seven people's data). 
 Training started on: 2015-06-07 03:03:11.157000
 Precision,Recall,F1
 0.238353551167,0.238353551167,0.238353551167
@@ -58,6 +59,7 @@ Precision,Recall,F1
 Training started on: 2015-06-07 06:32:19.024000
 Precision,Recall,F1
 1.38275337942,1.38275337942,1.38275337942
+The following is done after adding the convertImgToBinary(pic) function. Best result so far
 Training started on: 2015-06-07 11:44:45.508000
 Precision,Recall,F1
 0.844343847812,0.844343847812,0.844343847812
