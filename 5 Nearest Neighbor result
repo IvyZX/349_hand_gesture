@@ -1,0 +1,54 @@
+=== Run information ===
+
+Scheme:weka.classifiers.lazy.IBk -K 5 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""
+Relation:     EECS-349-Final-Project-Data
+Instances:    3130
+Attributes:   626
+[list of attributes omitted]
+Test mode:split 66.0% train, remainder test
+
+=== Classifier model (full training set) ===
+
+IB1 instance-based classifier
+using 5 nearest neighbour(s) for classification
+
+
+Time taken to build model: 0 seconds
+
+=== Evaluation on test split ===
+=== Summary ===
+
+Correctly Classified Instances         674               63.3459 %
+Incorrectly Classified Instances       390               36.6541 %
+Kappa statistic                          0.5775
+Mean absolute error                      0.1116
+Root mean squared error                  0.2418
+Relative absolute error                 51.2144 %
+Root relative squared error             73.1777 %
+Total Number of Instances             1064     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.803     0.017      0.873     0.803     0.837      0.965    A
+                 0.435     0.036      0.614     0.435     0.509      0.855    B
+                 0.548     0.023      0.758     0.548     0.636      0.911    C
+                 0.879     0.267      0.363     0.879     0.514      0.849    One
+                 0.381     0.025      0.676     0.381     0.487      0.857    Two
+                 0.675     0.024      0.7       0.675     0.687      0.899    Three
+                 0.836     0.015      0.897     0.836     0.865      0.967    Four
+                 0.467     0.017      0.837     0.467     0.599      0.903    Five
+Weighted Avg.    0.633     0.058      0.715     0.633     0.641      0.901
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   <-- classified as
+ 110   0  15  12   0   0   0   0 |   a = A
+   9  54   4  51   4   1   0   1 |   b = B
+   4   4  69  48   0   0   0   1 |   c = C
+   0   4   1 138   9   4   0   1 |   d = One
+   1   8   0  47  48  16   2   4 |   e = Two
+   0   4   1   8   7  56   5   2 |   f = Three
+   1   8   1   4   2   2 122   6 |   g = Four
+   1   6   0  72   1   1   7  77 |   h = Five
+

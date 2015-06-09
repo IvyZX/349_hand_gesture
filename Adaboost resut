@@ -1,0 +1,73 @@
+=== Run information ===
+
+Scheme:weka.classifiers.meta.AdaBoostM1 -P 100 -S 1 -I 10 -W weka.classifiers.trees.DecisionStump
+Relation:     EECS-349-Final-Project-Data
+Instances:    3130
+Attributes:   626
+[list of attributes omitted]
+Test mode:split 66.0% train, remainder test
+
+=== Classifier model (full training set) ===
+
+AdaBoostM1: No boosting possible, one classifier used!
+Decision Stump
+
+Classifications
+
+612 <= 8.5 : Five
+612 > 8.5 : Four
+612 is missing : Five
+
+Class distributions
+
+612 <= 8.5
+A	B	C	One	Two	Three	Four	Five	
+0.03279515640766902	0.12916246215943492	0.12764883955600403	0.21543895055499496	0.13269424823410697	0.059031281533804235	0.06407669021190716	0.2391523713420787	
+612 > 8.5
+A	B	C	One	Two	Three	Four	Five	
+0.2604529616724739	0.08275261324041812	0.12195121951219512	0.059233449477351915	0.03484320557491289	0.14721254355400698	0.27090592334494773	0.02264808362369338	
+612 is missing
+A	B	C	One	Two	Three	Four	Five	
+0.11629392971246007	0.1121405750798722	0.1255591054313099	0.15814696485623003	0.09680511182108627	0.09137380191693291	0.13993610223642172	0.1597444089456869	
+
+
+
+Time taken to build model: 0.33 seconds
+
+=== Evaluation on test split ===
+=== Summary ===
+
+Correctly Classified Instances         261               24.5301 %
+Incorrectly Classified Instances       803               75.4699 %
+Kappa statistic                          0.1138
+Mean absolute error                      0.2073
+Root mean squared error                  0.3222
+Relative absolute error                 95.1592 %
+Root relative squared error             97.5118 %
+Total Number of Instances             1064     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0         0          0         0         0          0.749    A
+                 0         0          0         0         0          0.562    B
+                 0         0          0         0         0          0.506    C
+                 0         0          0         0         0          0.627    One
+                 0         0          0         0         0          0.637    Two
+                 0         0          0         0         0          0.649    Three
+                 0.719     0.321      0.263     0.719     0.385      0.699    Four
+                 0.945     0.565      0.235     0.945     0.376      0.69     Five
+Weighted Avg.    0.245     0.132      0.072     0.245     0.111      0.643
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   <-- classified as
+   0   0   0   0   0   0 111  26 |   a = A
+   0   0   0   0   0   0  33  91 |   b = B
+   0   0   0   0   0   0  46  80 |   c = C
+   0   0   0   0   0   0  25 132 |   d = One
+   0   0   0   0   0   0  17 109 |   e = Two
+   0   0   0   0   0   0  54  29 |   f = Three
+   0   0   0   0   0   0 105  41 |   g = Four
+   0   0   0   0   0   0   9 156 |   h = Five
+
