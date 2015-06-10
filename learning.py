@@ -245,8 +245,8 @@ if __name__ == "__main__":
 
     # If you want to do the ten fold cross validation. (Which takes super long for our KNN algorithm)
     #tenFoldCrossValidation()
-    crossValidationAcrossDifferentPeople(neighbor_num=2)
-    #outputArff()
+    #crossValidationAcrossDifferentPeople(neighbor_num=2)
+    outputArff()
     endTime = datetime.datetime.now()
     print 'Total time: ' + str(endTime - startTime)
 
