@@ -151,9 +151,11 @@ def tenFoldCrossValidation(neighbor_num=3, precisionRecallFileName='precisionRec
     print ('Precision: ' + str(precision) + ', Recall: ' + str(recall) + ', F1: ' + str(f1) + '\n')
     return
 
-def crossValidationAcrossDifferentPeople(neighbor_num=2, precisionRecallFileName='precisionRecallFile.csv',
+def crossValidationAcrossDifferentPeople(neighbor_num=2,saveFailed=True, precisionRecallFileName='precisionRecallFile.csv',
                            trueFalseTableFileName='trueFalseTable.csv'):
     # Initialize Precisions and Recall values
+    if saveFailed == True and not os.path.exists(dir + '//failed_images//'):
+        os.makedirs(dir + '//failed_images//')
     precision = 0.0
     recall = 0.0
     now = datetime.datetime.now()
@@ -187,6 +189,9 @@ def crossValidationAcrossDifferentPeople(neighbor_num=2, precisionRecallFileName
             else:
                 falsePos[gesture_id[:-1]] += 1
                 falseNeg[data[1][:-1]] += 1
+                if saveFailed==True:
+                    img=np.array([[data[0][i][j]<<7 for j in range(len(data[0][i]))] for i in range(len(data[0]))])
+                    cv2.imwrite(dir + "//failed_images//" + str(data[1][:-1]) + "_as_"+str(gesture_id[:-1])+str(int(counter))+".png", img)
             counter += 1
             if counter % 10 == 0:
                 sys.stdout.write('\rtrial ' + str(i) + ':' + str(counter / len(validation_data_set) * 100) + '% Done')
@@ -245,8 +250,8 @@ if __name__ == "__main__":
 
     # If you want to do the ten fold cross validation. (Which takes super long for our KNN algorithm)
     #tenFoldCrossValidation()
-    #crossValidationAcrossDifferentPeople(neighbor_num=2)
-    outputArff()
+    crossValidationAcrossDifferentPeople(neighbor_num=2,saveFailed=True)
+    #outputArff()
     endTime = datetime.datetime.now()
     print 'Total time: ' + str(endTime - startTime)
 

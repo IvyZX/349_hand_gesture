@@ -63,3 +63,12 @@ The following is done after adding the convertImgToBinary(pic) function. Best re
 Training started on: 2015-06-07 11:44:45.508000
 Precision,Recall,F1
 0.844343847812,0.844343847812,0.844343847812
+Training started on: 2015-06-10 14:01:45.653000
+Precision,Recall,F1
+0.147720727996,0.147720727996,0.147720727996
+Training started on: 2015-06-10 14:46:00.243000
+Precision,Recall,F1
+0.128539253539,0.128539253539,0.128539253539
+Training started on: 2015-06-10 15:34:45.552000
+Precision,Recall,F1
+0.844343847812,0.844343847812,0.844343847812
