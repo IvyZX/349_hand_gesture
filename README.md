@@ -4,7 +4,8 @@ For an overview of the implementation and the result, please visit our website: 
 
 # How to Use
 Dependencies: 
-  OpenCV 2.4.9 for Python http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html
-Run: 
-  run file "VideoCapture.py" to start the program. 
+ - OpenCV 2.4.9 for Python http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html
+
+Run:
+ - run file "VideoCapture.py" to start the program. 
 
